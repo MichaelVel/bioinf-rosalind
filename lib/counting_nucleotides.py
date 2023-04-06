@@ -1,6 +1,4 @@
-
 from typing import Counter
-
 
 def raw_solution(adn: str) -> str:
     counter = {"A": 0, "C": 0, "G": 0, "T": 0}
