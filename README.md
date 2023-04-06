@@ -1,5 +1,7 @@
 
-This repository my solutions to the programming exercises of 
+# BIOINF-ROSALIND
+
+This repository contains my solutions to the programming exercises of 
 [ROSALIND](https://rosalind.info/problems/locations/) project. 
 
 The code contains a simple client that take an input file data and 
