@@ -3,17 +3,26 @@ from typing import Iterable
 def motif_in_all(motif: str, dna_strings: Iterable[str]) -> bool:
     return all(motif in dna_seq for dna_seq in dna_strings)
 
-def shared_motif(dna_strings: Iterable[str]) -> str:
+def common_motif(short_seq: str, comp_seq: Iterable[str] , length: int) -> str | None:
+    for i in range(len(short_seq) - length + 1):
+        motif = short_seq[i:i+length]
+        if motif_in_all(motif, comp_seq): 
+            return motif
+    return None
+
+def longest_shared_motif(dna_strings: Iterable[str]) -> str:
     short_seq, *comp_seq = sorted(dna_strings, key=len)
-    motif = ""
+    l, r = 0, len(short_seq) + 1
 
-    for i, _ in enumerate(short_seq):
-        for j, _ in enumerate(short_seq, start=i):
-            c_motif = short_seq[i:j+1]
-            if motif_in_all(c_motif, comp_seq) and len(c_motif) > len(motif):
-                motif = c_motif
+    while l+1 < r:
+        mid = (l+r) // 2
+        if common_motif(short_seq, comp_seq, mid):
+            l=mid
+        else:
+            r=mid
 
-    return motif
+    lsm = common_motif(short_seq, comp_seq, l)
+    return lsm if lsm else ""
 
 
 def main(input: str) -> str:
@@ -23,7 +32,7 @@ def main(input: str) -> str:
         dna = [l for l in segment.splitlines() if "Rosalind" not in l]
         dna_strings.append(''.join(dna))
 
-    return shared_motif(dna_strings)
+    return longest_shared_motif(dna_strings)
 
 if __name__ == "__main__":
     INPUT_TEST="""\
