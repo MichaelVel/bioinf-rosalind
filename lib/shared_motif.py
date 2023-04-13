@@ -1,16 +1,24 @@
 from typing import Iterable
 
-def motif_in_all(motif: str, dna_strings: Iterable[str]) -> bool:
-    return all(motif in dna_seq for dna_seq in dna_strings)
+def substring_in_all(s: str, dna_strings: Iterable[str]) -> bool:
+    return all(s in dna_seq for dna_seq in dna_strings)
 
 def common_motif(short_seq: str, comp_seq: Iterable[str] , length: int) -> str | None:
+    """ Check in comparitions sequences if at least one substring of 
+    the given lenght from the short seq exists.
+    
+    """
     for i in range(len(short_seq) - length + 1):
         motif = short_seq[i:i+length]
-        if motif_in_all(motif, comp_seq): 
+        if substring_in_all(motif, comp_seq): 
             return motif
     return None
 
 def longest_shared_motif(dna_strings: Iterable[str]) -> str:
+    """ Return the longest shared motif between a given set of 
+    dna strings. If not found return an empty string.
+
+    """
     short_seq, *comp_seq = sorted(dna_strings, key=len)
     l, r = 0, len(short_seq) + 1
 
