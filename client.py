@@ -86,6 +86,7 @@ def run():
     try:
         solution = import_module(modulename)
     except Exception as e:
+        print(e)
         print(f"Failed import of lib/{argv[2]} file.")
     else:
         input = get_from_uniprot(filename) if u_flag else parseInput(filename)
