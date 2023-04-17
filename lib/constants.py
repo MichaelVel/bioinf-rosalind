@@ -23,3 +23,5 @@ CODON_TABLE = { # 'X' represent stop codon
 }
 
 N_CODONS_PER_AMINOACIDS = Counter(CODON_TABLE.values())
+
+START_CODON = "AUG"

@@ -1,7 +1,7 @@
-from .constants import CODON_TABLE 
+from constants import CODON_TABLE
 
 def lookup_codon(codon: str) -> str:
-    return CODON_TABLE[codon]
+    return CODON_TABLE[codon] if codon in CODON_TABLE else ""
 
 def translation(adn: str) -> str:
     seq = []
@@ -9,14 +9,16 @@ def translation(adn: str) -> str:
         codon = adn[i:i+3]
         aminoacid = lookup_codon(codon)
         
-        if aminoacid == 'X': break
-
         seq.append(aminoacid)
+
+        if aminoacid == 'X': 
+            break
 
     return ''.join(seq)
 
 def main(input: str) -> str:
-    return translation(input)
+    protein = translation(input)
+    return protein if protein[-1] != 'X' else protein[:-1]
 
 
 if __name__ == "__main__":

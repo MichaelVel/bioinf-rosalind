@@ -1,8 +1,4 @@
-if __name__ == "__main__":
-    from constants import N_CODONS_PER_AMINOACIDS
-else:
-    from .constants import N_CODONS_PER_AMINOACIDS
-
+from constants import N_CODONS_PER_AMINOACIDS
 
 def number_codons(aminoacid: str) -> int:
     return N_CODONS_PER_AMINOACIDS[aminoacid]
