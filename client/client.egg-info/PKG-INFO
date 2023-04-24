@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: client
+Version: 1.0
+Summary: contains the utilities to the rosalind-cli implementation
+Author: Michael Velandia
+Author-email: msvelandiag@unal.edu.co
