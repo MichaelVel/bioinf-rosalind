@@ -5,17 +5,28 @@ import client.utilities as cl
 app = typer.Typer()
 
 @app.command()
-def create(name: str):
-    return None
+def create(
+        id: str,
+        loc: cl.Location = typer.Option(cl.Location.STRONGHOLD, "--location", "-l"),
+        tmpl: cl.Template = typer.Option(cl.Template.simple, "--template", "-t")
+):
+    to_path = f"{cl.Location.package()}/{loc.module()}/{id}.py"
+    cl.copy_template(tmpl, to_path)
+    print(f"Created file: {to_path}")
 
 @app.command()
 def get(source: str, file: str) -> str:
     process_file = cl.get_data_from_source(source)
     return process_file(file)
 
-
-@app.callback(invoke_without_command=True)
-def main(input: str, id: str, source: str =  typer.Option("")):
+@app.command()
+def run(
+        input: str, 
+        id: str,
+        source: str =  typer.Option("", "--source", "-s"),
+        loc: cl.Location = typer.Option(cl.Location.STRONGHOLD, "--location", "-l"),
+):
+    print("what")
     if source: 
         input = get(source, input)
 

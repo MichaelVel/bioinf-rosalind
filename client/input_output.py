@@ -1,4 +1,6 @@
 from os import remove
+from shutil import copy
+from enum import Enum
 from typing import Iterable
 
 # ---- Input / Output utilities 
@@ -11,3 +13,25 @@ def writeCache(filename: str, data: Iterable[str]) -> None:
             for entry in data: f.write(entry)
     except Exception:
         remove(filename)
+
+# --- Template utilities
+class Template(str,Enum):
+    list = "list"
+    map = "map"
+    simple = "simple"
+
+    def template_file(self) -> str:
+        match self.value:
+            case "list": return "starter_list.py"
+            case "map": return "starter_map.py"
+
+        return "starter.py"
+
+    @staticmethod
+    def folder() -> str:
+        return "templates"
+
+def copy_template(template: Template, location: str):
+    input_file = f"{Template.folder()}/{template.template_file()}"
+    copy(input_file, location)
+
