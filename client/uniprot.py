@@ -41,6 +41,6 @@ def get_from_uniprot(filename: str) -> str:
             raise Exception(UNIPROT_NOT_FOUND.format(id,filename))
         input_from_uniprot.append(id_data.text)
 
-    io.writeCache(file_cached, input_from_uniprot)
+    io.writeCache(file_cached, '\n'.join(input_from_uniprot))
 
     return ''.join(input_from_uniprot)

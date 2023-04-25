@@ -1,16 +1,15 @@
 from os import remove
 from shutil import copy
 from enum import Enum
-from typing import Iterable
 
 # ---- Input / Output utilities 
 def parseInput(filename: str) -> str:
     with open(filename, 'r') as f: return f.read()
 
-def writeCache(filename: str, data: Iterable[str]) -> None:
+def writeCache(filename: str, data: str) -> None:
     try:
         with open(filename, 'a') as f: 
-            for entry in data: f.write(entry)
+            f.write(data)
     except Exception:
         remove(filename)
 

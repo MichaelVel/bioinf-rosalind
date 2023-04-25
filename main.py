@@ -25,14 +25,17 @@ def run(
         id: str,
         source: str =  typer.Option("", "--source", "-s"),
         loc: cl.Location = typer.Option(cl.Location.STRONGHOLD, "--location", "-l"),
+        save: bool = typer.Option(False, "--save", "-s"),
 ):
     print("what")
     if source: 
         input = get(source, input)
 
-    solution = cl.load_solution_module(id)
+    solution = cl.load_solution_module(id, loc)
     data = cl.parseInput(input)
     solution = solution.main(data)
+    if save:
+      cl.writeCache(f"solutions/{id}.txt", solution)
 
     print(solution)
 
