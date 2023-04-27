@@ -49,3 +49,4 @@ def load_solution_module(
         location: Location = Location.STRONGHOLD
 ) -> ModuleType:
     return import_module(f"{location.module()}.{id}", package=Location.package())
+

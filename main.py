@@ -1,6 +1,7 @@
 import typer
 
 import client.utilities as cl
+from client.tests import Test
 
 app = typer.Typer()
 
@@ -13,6 +14,7 @@ def create(
     to_path = f"{cl.Location.package()}/{loc.module()}/{id}.py"
     cl.copy_template(tmpl, to_path)
     print(f"Created file: {to_path}")
+
 
 @app.command()
 def get(source: str, file: str) -> str:
@@ -38,6 +40,23 @@ def run(
       cl.writeCache(f"solutions/{id}.txt", solution)
 
     print(solution)
+
+test_help_remove = "replace the current test for exercise."
+
+@app.command()
+def test(
+        id: str,
+        loc: cl.Location = typer.Option(cl.Location.STRONGHOLD, "--location", "-l"),
+        remove: bool = typer.Option(False, "--remove", "-r", help= test_help_remove),
+):
+    test = Test(id,loc)
+    if remove:
+        test.test_remove()
+
+    if not test.test_exist():
+        test.create_test()
+    
+    test.run_test()
 
 
 if __name__ == "__main__":

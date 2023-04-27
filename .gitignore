@@ -1,5 +1,6 @@
 data/
 solutions/
+solutions_tests/
 __pycache__/
 build/
 lib.egg-info/

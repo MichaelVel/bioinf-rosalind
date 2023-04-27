@@ -8,6 +8,8 @@ lib = {editable = true, path = "./lib"}
 requests = "*"
 typer = {extras = ["all"], version = "*"}
 client = {editable = true, path = "./client"}
+beautifulsoup4 = "*"
+pytest = "*"
 
 [dev-packages]
 
