@@ -4,7 +4,7 @@ import pytest
 import sys
 
 from utilities import Location
-from web import ProblemParser
+from web.parsers import ProblemParser
 from input_output import writeCache
 
 class Test():

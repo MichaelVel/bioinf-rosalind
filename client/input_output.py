@@ -1,6 +1,8 @@
-from os import remove
+from os import remove, path
 from shutil import copy
-from enum import Enum
+
+from options import Template
+from web.uniprot import download_from_uniprot
 
 # ---- Input / Output utilities 
 def parseInput(filename: str) -> str:
@@ -14,23 +16,25 @@ def writeCache(filename: str, data: str) -> None:
         remove(filename)
 
 # --- Template utilities
-class Template(str,Enum):
-    list = "list"
-    map = "map"
-    simple = "simple"
-
-    def template_file(self) -> str:
-        match self.value:
-            case "list": return "starter_list.py"
-            case "map": return "starter_map.py"
-
-        return "starter.py"
-
-    @staticmethod
-    def folder() -> str:
-        return "templates"
-
 def copy_template(template: Template, location: str):
     input_file = f"{Template.folder()}/{template.template_file()}"
     copy(input_file, location)
 
+# -- From source utilities
+def get_from_uniprot(filename: str) -> str:
+    """Get data from the uniprot datasource, the function tries to 
+    cache the results of the querys, but if one of the writes failed 
+    then at a new run the data will be downloaded again.
+    """
+
+    file_cached = filename.replace(".txt", "_CACHE.fasta")
+
+    if path.isfile(file_cached):
+        return parseInput(file_cached)
+    
+    input = parseInput(filename)
+    data = download_from_uniprot(input)
+
+    writeCache(file_cached, '\n'.join(data))
+
+    return ''.join(data)
