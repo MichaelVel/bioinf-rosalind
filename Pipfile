@@ -10,6 +10,7 @@ typer = {extras = ["all"], version = "*"}
 client = {editable = true, path = "./client"}
 beautifulsoup4 = "*"
 pytest = "*"
+requests-toolbelt = "*"
 
 [dev-packages]
 

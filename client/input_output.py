@@ -1,5 +1,6 @@
 from os import remove, path
 from shutil import copy
+import pickle
 
 from options import Template
 from web.uniprot import download_from_uniprot
@@ -38,3 +39,16 @@ def get_from_uniprot(filename: str) -> str:
     writeCache(file_cached, '\n'.join(data))
 
     return ''.join(data)
+
+# -- Dump utilities
+def dump_cookies(filename, data: dict[str,str]):
+    with open(filename, 'wb') as f: pickle.dump(data,f)
+
+def load_cookies(filename) -> dict[str,str]:
+    with open(filename, 'wb') as f: return  pickle.load(f)
+
+def update_cookies(filename, data: dict[str,str]):
+    with open(filename, 'w+b') as f:
+        data_loaded =pickle.load(f)
+        pickle.dump({**data_loaded,**data},f)
+

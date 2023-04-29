@@ -5,3 +5,4 @@ solution_tests/
 __pycache__/
 build/
 rosalind_cli.egg-info/
+.session/

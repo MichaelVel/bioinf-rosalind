@@ -14,6 +14,15 @@ def create(
     cl.io.copy_template(tmpl, to_path)
     print(f"Created file: {to_path}")
 
+@app.command()
+def login(
+    username: str = typer.Option(..., prompt=True),
+    password: str = typer.Option(..., 
+        prompt=True, confirmation_prompt= True, hide_input=True),
+):
+    data = cl.web.account.login(username,password)
+    cl.io.dump_cookies('.session/cookies', data)
+
 
 @app.command()
 def get(source: str, file: str) -> str:
