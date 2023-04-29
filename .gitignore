@@ -4,4 +4,4 @@ solutions_tests/
 solution_tests/
 __pycache__/
 build/
-lib.egg-info/
+rosalind_cli.egg-info/
