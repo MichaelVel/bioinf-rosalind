@@ -1,5 +1,6 @@
 from textwrap import dedent
 import typer
+from web.exceptions import UnauthorizedAccessException
 
 import client as cl
 
@@ -40,6 +41,7 @@ def get(source: str, file: str) -> str:
     return process_file(file)
 
 
+
 @app.command(help="run the given problem with a local input datasource.")
 def run(
         id: str = typer.Argument(..., help="A valid rosalind id."),
@@ -63,6 +65,55 @@ def run(
         cl.io.writeCache(f"solutions/{id}.txt", solution)
     else:
         print(solution)
+
+@app.command(help="Submit your solution to rosalind.") 
+def submit(
+        id: str = typer.Argument(..., help="A valid rosalind id."),
+        loc: cl.Location = typer.Option(
+            cl.Location.STRONGHOLD, 
+            "--location", "-l",
+            help="A valid rosalind location."),
+        publish: bool = typer.Option(
+            False,
+            "--publish", "-p",
+            help= "set if you want to publish to rosalind your source file"),
+        save: bool = typer.Option(
+            False,
+            "--save", "-s",
+            help=dedent("""Set if you want to save the challenge data from 
+                        rosalind web page.""")),
+):
+    cookies = cl.io.load_cookies(".session/cookies")
+    exercise = cl.web.exercises.Exercise(id,cookies)
+    
+    data = exercise.problem_dataset()
+
+    solution = cl.utils.load_solution_module(id, loc)
+    solution = solution.main(data)
+    
+    solution_filename = f"solutions/{id}.txt"
+    cl.io.writeCache(solution_filename, solution)
+
+    # submit solution and assert if the answer is correct and print to stdout.
+    try:
+        submit_cookies = exercise.submit(solution_filename)
+    except cl.web.exceptions.WrongAnswerException:
+        log_data = f"data/{id}_WRONG_ANWER_DATA_LOG.txt" 
+        log_solution = f"solutions/{id}_WRONG_ANWER_SOLUTION_LOG.txt" 
+        cl.io.writeCache(log_data, data)
+        cl.io.writeCache(log_solution, solution)
+        print(dedent(f"""\
+            Wrong Answer: Modify your answer and try again. You can find
+            a data copy in {log_data} and a copy of the output solution 
+            at {log_solution}."""))
+    else:
+        cl.io.update_cookies('.session/cookies', submit_cookies)
+
+    if save:
+        cl.io.writeCache(f"data/{id}_SAVED.txt", data)
+
+    if publish: print("Publish is currently unimplemented.")
+
 
 
 @app.command(help="""\

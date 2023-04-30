@@ -4,7 +4,7 @@ import pytest
 import sys
 
 from utilities import Location
-from web.parsers import ProblemParser
+from web.exercises import Exercise
 from input_output import writeCache
 
 class Test():
@@ -29,9 +29,10 @@ class Test():
 
     def create_test(self):
         result = ""
-        pp = ProblemParser(self.id)
-        self.d["test_data"] = pp.sample_dataset()
-        self.d["expected"] = pp.sample_output()
+        exercise = Exercise(self.id)
+        exercise.get()
+        self.d["test_data"] = exercise.sample_dataset()
+        self.d["expected"] = exercise.sample_output()
 
         with open("templates/test_template.py", "r") as f:
             src = Template(f.read())

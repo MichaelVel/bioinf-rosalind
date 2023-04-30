@@ -45,7 +45,7 @@ def dump_cookies(filename, data: dict[str,str]):
     with open(filename, 'wb') as f: pickle.dump(data,f)
 
 def load_cookies(filename) -> dict[str,str]:
-    with open(filename, 'wb') as f: return  pickle.load(f)
+    with open(filename, 'rb') as f: return  pickle.load(f)
 
 def update_cookies(filename, data: dict[str,str]):
     with open(filename, 'w+b') as f:
