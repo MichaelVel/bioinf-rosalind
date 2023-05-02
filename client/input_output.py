@@ -11,7 +11,7 @@ def parseInput(filename: str) -> str:
 
 def writeCache(filename: str, data: str) -> None:
     try:
-        with open(filename, 'a') as f: 
+        with open(filename, 'w') as f: 
             f.write(data)
     except Exception:
         remove(filename)

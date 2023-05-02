@@ -1,4 +1,3 @@
-from io import FileIO
 from bs4 import BeautifulSoup, Tag, NavigableString
 from requests_toolbelt import MultipartEncoder
 import requests
@@ -31,21 +30,21 @@ class Exercise:
 
         self.soup = BeautifulSoup(self.get_request.text, 'html.parser')
 
-        return self.get_request.cookies.get_dict()
+        return self.session.cookies.get_dict()
     
 
     def submit(self, output_filename: str) -> dict[str,str]:
+        cookie = self.session.cookies.get("csrftoken")
         m = MultipartEncoder( fields = {
             'output_file': 
                 ('solution.txt',open(output_filename, 'rb'), 'text/plain'),
             #'code': ('solution.txt',open(code_filename, 'rb'), 'text/plain'),
-            'csrfmiddlewaretoken': 
-                (None, self.session.cookies.get('csrftoken')),})
-        header = {'Content-Type': m.content_type }
+            'csrfmiddlewaretoken': (None, cookie)})
 
+        header = {'Content-Type': m.content_type, 'referer': self.url}
 
         self.post_request = self.session.post(
-                "https://rosalind.info/accounts/login/", 
+                self.url,
                 headers = header,
                 data = m)
 
@@ -58,7 +57,7 @@ class Exercise:
         if not self.soup.find_all('div', class_="alert-success"):
             raise WrongAnswerException()
 
-        return self.post_request.cookies.get_dict()
+        return self.session.cookies.get_dict()
 
 
     def problem_dataset(self) -> str:
@@ -70,7 +69,7 @@ class Exercise:
         if self.get_request.url != dataset_url:
             raise UnauthorizedAccessException(
                     "Please login to publish your results")
-
+        
         return self.get_request.text
 
     def sample_dataset(self) -> str:

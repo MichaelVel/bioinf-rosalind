@@ -1,6 +1,5 @@
 from textwrap import dedent
 import typer
-from web.exceptions import UnauthorizedAccessException
 
 import client as cl
 
@@ -85,9 +84,8 @@ def submit(
 ):
     cookies = cl.io.load_cookies(".session/cookies")
     exercise = cl.web.exercises.Exercise(id,cookies)
-    
     data = exercise.problem_dataset()
-
+    
     solution = cl.utils.load_solution_module(id, loc)
     solution = solution.main(data)
     
@@ -106,8 +104,12 @@ def submit(
             Wrong Answer: Modify your answer and try again. You can find
             a data copy in {log_data} and a copy of the output solution 
             at {log_solution}."""))
+    except cl.web.exceptions.UnauthorizedAccessException:
+        print("You are not logged in. Please login and try again.")
+        return
     else:
-        cl.io.update_cookies('.session/cookies', submit_cookies)
+        print("Congratulations, correct Answer!!")
+        cl.io.dump_cookies('.session/cookies', submit_cookies)
 
     if save:
         cl.io.writeCache(f"data/{id}_SAVED.txt", data)
