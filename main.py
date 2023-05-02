@@ -29,8 +29,13 @@ def login(
     password: str = typer.Option(..., 
         prompt=True, confirmation_prompt= True, hide_input=True),
 ):
-    data = cl.web.account.login(username,password)
-    cl.io.dump_cookies('.session/cookies', data)
+    try:
+        data = cl.web.account.login(username,password)
+    except cl.web.exceptions.UnauthorizedAccessException as e:
+        print(e)
+    else:
+        print(f"Welcome {username}, you are now succesfully logged in.")
+        cl.io.dump_cookies('.session/cookies', data)
 
 
 

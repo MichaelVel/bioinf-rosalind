@@ -1,6 +1,8 @@
 from requests_toolbelt import MultipartEncoder
 import requests
 
+from exceptions import UnauthorizedAccessException
+
 def login(username: str, password: str) -> dict[str,str]:
     referer = "https://rosalind.info/problems/locations/"
     session = requests.session()
@@ -24,7 +26,8 @@ def login(username: str, password: str) -> dict[str,str]:
         # There are multiple ways to check if the login was succesful, 
         # but i choose the fact that rosalind redirects you to this 
         # particular link.
-        raise Exception("Failed to login. Wrong username and/or password")
+        raise UnauthorizedAccessException(
+                "Failed to login. Wrong username and/or password")
     
     return session.cookies.get_dict()
 
