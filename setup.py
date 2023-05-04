@@ -1,9 +1,9 @@
 from setuptools import find_packages, setup
 
 setup(
-   name='lib',
+   name='rosalind-cli',
    version='1.0',
-   description='Contains the solutions for the rosalind problems',
+   description='Create, modify and publish your solutions to rosalind web project.',
    author='Michael Velandia',
    author_email='msvelandiag@unal.edu.co',
    packages=find_packages(),  #same as name

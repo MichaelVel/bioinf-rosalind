@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-lib = {editable = true, path = "./lib"}
 requests = "*"
 typer = {extras = ["all"], version = "*"}
 client = {editable = true, path = "./client"}

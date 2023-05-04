@@ -8,10 +8,6 @@ app = typer.Typer()
 @app.command(help="create a solution file from a template.")
 def create(
         id: str = typer.Argument(..., help="A valid rosalind id."),
-        loc: cl.Location = typer.Option(
-            cl.Location.STRONGHOLD, 
-            "--location", "-l",
-            help="A valid rosalind location."),
         tmpl: cl.Template = typer.Option(
             cl.Template.simple,
             "--template", "-t",
@@ -51,17 +47,13 @@ def run(
         id: str = typer.Argument(..., help="A valid rosalind id."),
         input: str = typer.Argument(... , 
             help="input data source to run the solution."),
-        loc: cl.Location = typer.Option(
-            cl.Location.STRONGHOLD, 
-            "--location", "-l",
-            help="A valid rosalind location."),
         save: bool = typer.Option(
             False,
             "--save", "-s",
             help=dedent("""Set if you want to save the answer to a file,
                         if not print to stdout.""")),
 ):
-    solution = cl.utils.load_solution_module(id, loc)
+    solution = cl.utils.load_solution_module(id, loc) # TODO: modify 
     data = cl.io.parseInput(input)
     solution = solution.main(data)
 
@@ -73,10 +65,6 @@ def run(
 @app.command(help="Submit your solution to rosalind.") 
 def submit(
         id: str = typer.Argument(..., help="A valid rosalind id."),
-        loc: cl.Location = typer.Option(
-            cl.Location.STRONGHOLD, 
-            "--location", "-l",
-            help="A valid rosalind location."),
         publish: bool = typer.Option(
             False,
             "--publish", "-p",
@@ -91,7 +79,7 @@ def submit(
     exercise = cl.web.exercises.Exercise(id,cookies)
     data = exercise.problem_dataset()
     
-    solution = cl.utils.load_solution_module(id, loc)
+    solution = cl.utils.load_solution_module(id, loc) # TODO: modify
     solution = solution.main(data)
     
     solution_filename = f"solutions/{id}.txt"
@@ -127,10 +115,6 @@ def submit(
 test your solution with the default example of the problem page.""")
 def test(
         id: str = typer.Argument(..., help="A valid rosalind id."),
-        loc: cl.Location = typer.Option(
-            cl.Location.STRONGHOLD, 
-            "--location", "-l",
-            help="A valid rosalind location."),
         reset: bool = typer.Option(
             False,
             "--remove", "-r",
@@ -138,7 +122,7 @@ def test(
                          to the default test. useful when you have made 
                          changes to the page and want a clean start.""")),
 ):
-    test = cl.tests.Test(id,loc)
+    test = cl.tests.Test(id,loc) # TODO: modify
     if reset:
         test.test_remove()
 
