@@ -18,6 +18,16 @@ def create(
     print(f"Created file: {to_path}")
 
 
+@app.command(help="create an empty workspace inside current directory.")
+def init(dir_name: str = typer.Argument("default")):
+    if cl.workspace.validate_workspace(): 
+        print(dedent("""Error creating a new workspace inside a 
+            valid rosalind-cli workspace"""))
+        return 
+
+    d_name = dir_name if dir_name != "default" else None
+    cl.workspace.create_workspace(d_name)
+
 
 @app.command(help="login to rosalind page, and store session data.")
 def login(

@@ -4,6 +4,7 @@ import web.account
 import web.exercises
 import web.exceptions
 import tests
+import workspace
 
 from options import Location, Template
 
