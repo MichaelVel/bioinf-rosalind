@@ -13,14 +13,16 @@ def create(
             "--template", "-t",
             help="Choose one of the existing templates.")
 ):
-    to_path = f"{cl.Location.package()}/{loc.module()}/{id}.py"
+    config = cl.workspace.load_config()
+    to_path = f"{config.SOLUTION_FOLDER}/{id}.py"
+
     cl.io.copy_template(tmpl, to_path)
     print(f"Created file: {to_path}")
 
 
 @app.command(help="create an empty workspace inside current directory.")
 def init(dir_name: str = typer.Argument("default")):
-    if cl.workspace.validate_workspace(): 
+    if cl.workspace.is_valid_workspace(): 
         print(dedent("""Error creating a new workspace inside a 
             valid rosalind-cli workspace"""))
         return 
@@ -63,7 +65,7 @@ def run(
             help=dedent("""Set if you want to save the answer to a file,
                         if not print to stdout.""")),
 ):
-    solution = cl.utils.load_solution_module(id, loc) # TODO: modify 
+    solution = cl.workspace.load_solution_module("id") 
     data = cl.io.parseInput(input)
     solution = solution.main(data)
 
@@ -89,7 +91,7 @@ def submit(
     exercise = cl.web.exercises.Exercise(id,cookies)
     data = exercise.problem_dataset()
     
-    solution = cl.utils.load_solution_module(id, loc) # TODO: modify
+    solution = cl.workspace.load_solution_module("id") 
     solution = solution.main(data)
     
     solution_filename = f"solutions/{id}.txt"
@@ -132,7 +134,7 @@ def test(
                          to the default test. useful when you have made 
                          changes to the page and want a clean start.""")),
 ):
-    test = cl.tests.Test(id,loc) # TODO: modify
+    test = cl.tests.Test(id) # TODO: modify
     if reset:
         test.test_remove()
 

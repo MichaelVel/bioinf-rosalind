@@ -3,16 +3,17 @@ from string import Template
 import pytest
 import sys
 
-from utilities import Location
 from web.exercises import Exercise
 from input_output import writeCache
+from workspace import load_config
 
 class Test():
-    def __init__(self, id: str, loc: Location) -> None:
+    def __init__(self, id: str) -> None:
+        config = load_config()
         self.id = id
-        self.test_path = f"solution_tests/{id}.py"
-        self.challenge_path = f"{loc.package()}/{loc.module()}/{id}.py"
-        self.module = f"{loc.package()}.{loc.module()}" 
+        self.test_path = f"{config.TEST_FOLDER}/{id}.py"
+        self.challenge_path = f"{config.SOLUTION_FOLDER}/{id}.py"
+        self.module = f"{config.SOLUTION_FOLDER}" 
         self.d = {
             "module": self.module,
             "file": id,
@@ -24,8 +25,7 @@ class Test():
         return Path(self.test_path).exists()
 
     def test_remove(self) -> None:
-        if self.test_exist():
-            Path(self.test_path).unlink()
+        if self.test_exist(): Path(self.test_path).unlink()
 
     def create_test(self):
         result = ""
