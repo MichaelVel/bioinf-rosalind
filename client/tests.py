@@ -5,7 +5,7 @@ import sys
 
 from web.exercises import Exercise
 from input_output import writeCache
-from workspace import load_config
+from workspacelib import load_config
 
 class Test():
     def __init__(self, id: str) -> None:

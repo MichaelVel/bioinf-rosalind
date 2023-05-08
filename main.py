@@ -13,7 +13,7 @@ def create(
             "--template", "-t",
             help="Choose one of the existing templates.")
 ):
-    config = cl.workspace.load_config()
+    config = cl.workspacelib.load_config()
     to_path = f"{config.SOLUTION_FOLDER}/{id}.py"
 
     cl.io.copy_template(tmpl, to_path)
@@ -22,13 +22,13 @@ def create(
 
 @app.command(help="create an empty workspace inside current directory.")
 def init(dir_name: str = typer.Argument("default")):
-    if cl.workspace.is_valid_workspace(): 
+    if cl.workspacelib.is_valid_workspace(): 
         print(dedent("""Error creating a new workspace inside a 
             valid rosalind-cli workspace"""))
         return 
 
     d_name = dir_name if dir_name != "default" else None
-    cl.workspace.create_workspace(d_name)
+    cl.workspacelib.create_workspace(d_name)
 
 
 @app.command(help="login to rosalind page, and store session data.")
@@ -42,8 +42,8 @@ def login(
     except cl.web.exceptions.UnauthorizedAccessException as e:
         print(e)
     else:
-        print(f"Welcome {username}, you are now succesfully logged in.")
         cl.io.dump_cookies('.session/cookies', data)
+        print(f"Welcome {username}, you are now succesfully logged in.")
 
 
 
@@ -65,12 +65,12 @@ def run(
             help=dedent("""Set if you want to save the answer to a file,
                         if not print to stdout.""")),
 ):
-    solution = cl.workspace.load_solution_module("id") 
+    solution = cl.workspacelib.load_solution_module(id) 
     data = cl.io.parseInput(input)
     solution = solution.main(data)
 
     if save:
-        cl.io.writeCache(f"solutions/{id}.txt", solution)
+        cl.io.writeCache(f"output/{id}.txt", solution) # Hard coded: TODO create a Run Class
     else:
         print(solution)
 
@@ -91,7 +91,7 @@ def submit(
     exercise = cl.web.exercises.Exercise(id,cookies)
     data = exercise.problem_dataset()
     
-    solution = cl.workspace.load_solution_module("id") 
+    solution = cl.workspacelib.load_solution_module(id) 
     solution = solution.main(data)
     
     solution_filename = f"solutions/{id}.txt"
@@ -134,7 +134,7 @@ def test(
                          to the default test. useful when you have made 
                          changes to the page and want a clean start.""")),
 ):
-    test = cl.tests.Test(id) # TODO: modify
+    test = cl.tests.Test(id)
     if reset:
         test.test_remove()
 
