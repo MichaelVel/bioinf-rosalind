@@ -1,7 +1,7 @@
 from requests_toolbelt import MultipartEncoder
 import requests
 
-from client.web.exceptions import UnauthorizedAccessException
+from .exceptions import UnauthorizedAccessException
 
 def login(username: str, password: str) -> dict[str,str]:
     referer = "https://rosalind.info/problems/locations/"

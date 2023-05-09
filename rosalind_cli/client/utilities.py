@@ -1,6 +1,6 @@
 from collections.abc import Callable
 
-from input_output import get_from_uniprot
+from .input_output import get_from_uniprot
 
 # ----- Source utilities
 SOURCE_CALLBACKS: dict[str, Callable[[str], str]]= {

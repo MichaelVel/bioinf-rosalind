@@ -1,7 +1,7 @@
 from textwrap import dedent
 import typer
 
-import client as cl
+from . import client as cl
 
 app = typer.Typer()
 

@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup, Tag, NavigableString
 from requests_toolbelt import MultipartEncoder
 import requests
 
-from web.exceptions import (
+from .exceptions import (
         UnauthorizedAccessException,
         ExerciseNotFoundException,
         WrongAnswerException,

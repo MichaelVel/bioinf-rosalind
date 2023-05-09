@@ -2,8 +2,8 @@ from os import remove, path
 from shutil import copy
 import pickle
 
-from options import Template
-from web.uniprot import download_from_uniprot
+from .options import Template
+from .web.uniprot import download_from_uniprot
 
 # ---- Input / Output utilities 
 def parseInput(filename: str) -> str:

@@ -3,9 +3,9 @@ from string import Template
 import pytest
 import sys
 
-from web.exercises import Exercise
-from input_output import writeCache
-from workspacelib import load_config
+from .web.exercises import Exercise
+from .input_output import writeCache
+from .workspacelib import load_config
 
 class Test():
     def __init__(self, id: str) -> None:
